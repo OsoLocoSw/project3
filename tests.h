@@ -5,6 +5,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdio.h>
 #include <assert.h> 
 #include <stdlib.h>
@@ -23,3 +27,6 @@ void test_select_victim_frame_approx_lru();
 void test_select_victim_frame_fifo();
 void test_daemon_update();
 
+#ifdef __cplusplus
+}
+#endif

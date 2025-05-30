@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif    
+
 #include "swap.h"
 #include "types.h"
 #include "pagesim.h"
@@ -12,7 +16,7 @@
  */
 typedef struct ft_entry
 {
-    uint8_t protected; /* set if the frame holds a page that should be
+    uint8_t is_protected; /* set if the frame holds a page that should be
                        immune from eviction */
     uint8_t mapped;    /* set if the frame is mapped. */
     uint8_t ref_count; /* counter of referenced bits. */
@@ -55,3 +59,7 @@ pfn_t free_frame(void);
 void page_fault(vaddr_t address);
 
 void daemon_update(void);
+
+#ifdef __cplusplus
+}
+#endif    

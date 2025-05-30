@@ -82,7 +82,7 @@ void test_daemon_update() {
 
     // TODO: are these bits being set correctly?
     frame_table[i].mapped = 1;
-    frame_table[i].protected = 0;
+    frame_table[i].is_protected = 0;
 
     pte_t* page_table_entry = get_page_table_entry(frame_table[i].vpn, frame_table[i].process->saved_ptbr, mem);
 
@@ -114,13 +114,13 @@ void test_select_victim_frame_approx_lru() {
 
     // make all the pages in memory mapped.
     for (int i = 0; i < NUM_FRAMES; i++) {
-        frame_table[i].protected = 0;
+        frame_table[i].is_protected = 0;
         frame_table[i].mapped = 1;
         frame_table[i].ref_count = 0xFF;
     }
 
     // protect the frame table
-    frame_table[0].protected = 1;
+    frame_table[0].is_protected = 1;
 
     frame_table[1].ref_count = 192;
     frame_table[2].ref_count = 128;
@@ -144,12 +144,12 @@ void test_select_victim_frame_fifo() {
 
     // Set up frames, make all mapped and unprotected
     for (int i = 0; i < NUM_FRAMES; i++) {
-        frame_table[i].protected = 0;
+        frame_table[i].is_protected = 0;
         frame_table[i].mapped = 1; 
     }
 
     // Protect the first frame (so it's never selected as a victim)
-    frame_table[0].protected = 1;
+    frame_table[0].is_protected = 1;
 
     replacement = FIFO;
     last_evicted = 1;

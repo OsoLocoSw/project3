@@ -56,7 +56,7 @@ pfn_t select_victim_frame() {
     /* See if there are any free frames first */
     size_t num_entries = MEM_SIZE / PAGE_SIZE;
     for (size_t i = 0; i < num_entries; i++) {
-        if (!frame_table[i].protected && !frame_table[i].mapped)
+        if (!frame_table[i].is_protected && !frame_table[i].mapped)
         {
             return i;
         }
@@ -66,7 +66,7 @@ pfn_t select_victim_frame() {
         /* Play Russian Roulette to decide which frame to evict */
         pfn_t unprotected_found = NUM_FRAMES;
         for (pfn_t i = 0; i < num_entries; i++) {
-            if (!frame_table[i].protected) {
+            if (!frame_table[i].is_protected) {
                 unprotected_found = i;
                 if (prng_rand() % 2) {
                     return i;

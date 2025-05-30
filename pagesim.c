@@ -295,7 +295,7 @@ void check_validity(int checks)
         panic("Frame table should begin at the first frame in memory");
     }
 
-    if (!frame_table[0].protected)
+    if (!frame_table[0].is_protected)
     {
         panic("Frame 0 should be marked as protected");
     }
@@ -320,7 +320,7 @@ void check_validity(int checks)
             }
 
             /* Validate that page table page is marked as protected */
-            if (!frame_table[found_ptbr].protected)
+            if (!frame_table[found_ptbr].is_protected)
             {
                 panic("Frames corresponding to the page tables of running processes must be marked as protected");
             }
@@ -331,7 +331,7 @@ void check_validity(int checks)
     /* Check for any protected frames that should not be protected */
     for (pfn = 0; pfn < NUM_FRAMES; pfn++)
     {
-        if (frame_table[pfn].protected && !protected_frames_accounted_for[pfn])
+        if (frame_table[pfn].is_protected && !protected_frames_accounted_for[pfn])
         {
             panic("Found frame marked as protected that should not be protected");
         }
@@ -406,7 +406,7 @@ void check_validity(int checks)
     /* Check that all frames that are mapped are accounted for */
     for (pfn = 0; pfn < NUM_FRAMES; pfn++)
     {
-        if (!frame_table[pfn].protected && frame_table[pfn].mapped && !(mapped_frames_accounted_for[pfn]))
+        if (!frame_table[pfn].is_protected && frame_table[pfn].mapped && !(mapped_frames_accounted_for[pfn]))
         {
             panic("Found frame table entry marked as mapped with no corresponding page table entry");
         }
